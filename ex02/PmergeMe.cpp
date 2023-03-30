@@ -16,9 +16,8 @@ PmergeMe::PmergeMe(const PmergeMe &src) : vectorSorter(src.vectorSorter),
 
 PmergeMe::PmergeMe(int argc, char **argv) : vectorSorter(argc, argv), listSorter(argc, argv)
 {
-    std::vector<int> temp;
-    vectorSorter.Sort();
-    listSorter.Sort();
+    vectorSorter.MergeInsertionSort();
+    listSorter.MergeInsertionSort();
 }
 
 

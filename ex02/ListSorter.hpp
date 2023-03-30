@@ -8,6 +8,8 @@ class ListSorter : public ISorter
 {
     private:
         std::list<int> list;
+		std::list<int>::iterator	GetNext(std::list<int>::iterator it);
+		std::list<int>::iterator	GetPrev(std::list<int>::iterator it);
 
     public:
         ListSorter();
@@ -16,8 +18,10 @@ class ListSorter : public ISorter
         ~ListSorter();
         ListSorter  operator=(const ListSorter &rhs);
 
-        void    Sort();
-        void    LogData() const;
+		void			InsertionSort(std::list<int>::iterator array, int len);
+		void			MergeSort(std::list<int>::iterator array, int len);
+        virtual	void    MergeInsertionSort();
+        virtual void    LogData() const;
 };
 
 #endif // LIST_SORTER
