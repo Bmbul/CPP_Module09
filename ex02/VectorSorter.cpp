@@ -28,7 +28,7 @@ VectorSorter    VectorSorter::operator=(const VectorSorter &rhs)
 }
 
 void    VectorSorter::Sort()
-{
+
     std::cout << "Before    ";
     LogData();
     std::vector<int>::iterator it = vector.begin() + 2;
