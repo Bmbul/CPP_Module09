@@ -54,10 +54,10 @@ Date::Date(const std::string &formattedText)
         if (_year > 0)
             this->year = _year;
         else
-            throw (BtcException("Bad Input" + formattedText));
+            throw (BtcException("Bad Input " + formattedText));
     }
     else
-        throw (BtcException("Bad Input" + formattedText));
+        throw (BtcException("Bad Input " + formattedText));
 
     if (std::getline(stream, segment, '-'))
     {
@@ -66,21 +66,21 @@ Date::Date(const std::string &formattedText)
         if (_month > 0 && _month <= 12)
             this->month = _month;
         else
-            throw (BtcException("Bad Input" + formattedText));
+            throw (BtcException("Bad Input " + formattedText));
     }
     else
-        throw (BtcException("Bad Input" + formattedText));
+        throw (BtcException("Bad Input " + formattedText));
 
     if (std::getline(stream, segment))
     {
         int _day;
         
         std::istringstream(segment) >> _day;
-        if (_day > 0  && day <= 31)
+        if (_day > 0  && _day <= 31)
             this->day = _day;
     }
     else
-        throw (BtcException("Bad Input" + formattedText));
+        throw (BtcException("Bad Input " + formattedText));
 }
 
 void    Date::PrintDate()
