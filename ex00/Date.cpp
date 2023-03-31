@@ -83,7 +83,7 @@ Date::Date(const std::string &formattedText)
         throw (BtcException("Bad Input " + formattedText));
 }
 
-void    Date::PrintDate()
+void    Date::PrintDate() const
 {
-    std::cout << "Year: " << year << ", Month: " << month << ", Day: " << day << std::endl; 
+    std::cout << year << "-" << month << "-" << day; 
 }

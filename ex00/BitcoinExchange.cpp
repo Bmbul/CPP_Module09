@@ -36,11 +36,10 @@ void    BitcoinExchange::FillData()
     }
     // for (std::map<Date, float>::iterator iter = data.begin(); iter != data.end(); iter++)
     // {
-    //     std::cout << iter->first.year << "-" << iter->first.month << "-"
-    //         << iter->first.day << std::endl;
+    //     iter->first.PrintDate();
+	// 	std::cout << " | " << iter->second << std::endl;
     // }
-    
-    std::cout << "Number of filled lines: " << data.size() << std::endl;
+    // std::cout << "Number of filled lines: " << data.size() << std::endl;
 }
 
 void    BitcoinExchange::AddRawData(const std::string &line)
