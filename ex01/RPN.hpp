@@ -9,7 +9,7 @@ class RPN
 {
     private:
         RPN();
-
+		
         std::string     expression;
         double result;
 

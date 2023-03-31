@@ -1,5 +1,6 @@
 #include "BitcoinExchange.hpp"
 #include <stdlib.h>
+#include <algorithm>
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &src) : data(src.data)
 {
@@ -10,7 +11,6 @@ BitcoinExchange::BitcoinExchange(/* args */) { }
 
 BitcoinExchange::BitcoinExchange(const char *filename)
 {
-
     FillData();
     StartReadingInputFile(filename);
 }
@@ -21,6 +21,8 @@ void    BitcoinExchange::FillData()
     std::string line;
 
     dataFile.open("data.csv");
+
+    std::getline(dataFile, line);
 
     while (std::getline(dataFile, line))
     {
@@ -33,22 +35,22 @@ void    BitcoinExchange::FillData()
             std::cout << e.what() << std::endl;
         }
     }
-    for (std::map<Date, float>::iterator iter = data.begin(); iter != data.end(); iter++)
-    {
-        std::cout << iter->first.year << "-" << iter->first.month << "-"
-            << iter->first.day << std::endl;
-    }
-    
-    std::cout << "Number of filled lines: " << data.size() << std::endl;
+    // for (std::map<Date, float>::iterator iter = data.begin(); iter != data.end(); iter++)
+    // {
+    //     iter->first.PrintDate();
+	// 	std::cout << " | " << iter->second << std::endl;
+    // }
+    // std::cout << "Number of filled lines: " << data.size() << std::endl;
 }
 
 void    BitcoinExchange::AddRawData(const std::string &line)
 {
     size_t pos = line.find(",");
 
-    std::string value = line.substr(pos + 1);
-    float val = std::atof(value.c_str());
     std::string dateString = line.substr(0, pos);
+    std::string value = line.substr(pos + 1);
+
+    float val = std::atof(value.c_str());
     Date date = Date(dateString);
     std::pair<Date, float> dataRaw(date, val);
     data.insert(dataRaw);
@@ -64,7 +66,7 @@ void    BitcoinExchange::StartReadingInputFile(const std::string &inputFile)
 
     // ignoring the first line
     std::getline(input, line);
-        
+
     while (std::getline(input, line))
     {
         try
@@ -87,6 +89,9 @@ void    BitcoinExchange::AnalyseInputRaw(const std::string &line)
     std::string value = line.substr(pos + 3);
 
     float val = std::atof(value.c_str());
+	if (val == 0 && (value.find_first_not_of(" \t0") != std::string::npos
+		|| (std::count(value.begin(), value.end(), '0') != 1)))
+		throw BtcException("Bad Input => " + line);
     if (val < 0)
         throw BtcException("Error: not a positive number.");
     else if (val > 1000)
@@ -96,7 +101,13 @@ void    BitcoinExchange::AnalyseInputRaw(const std::string &line)
     Date date = Date(dateString);
     std::map<Date, float>::iterator closest = data.lower_bound(date);
     if (date != closest->first)
+    {
+        if (closest == data.begin())
+        {
+            throw BtcException("Error: looking for a data that has been recorded earlier, than the first data we have.");
+        }
         --closest;
+    }
     std::cout << dateString << " => " << val << " = "
         << val * closest->second << std::endl;
 }

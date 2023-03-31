@@ -10,11 +10,9 @@
 
 class BitcoinExchange
 {
-    // typedef struct tm   Date;
-
     private:
         std::map<Date, float> data;
-        BitcoinExchange(/* args */);
+        BitcoinExchange();
         
         void    AddRawData(const std::string &line);
         void    AnalyseInputRaw(const std::string &line);

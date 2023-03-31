@@ -18,10 +18,9 @@ class VectorSorter : public ISorter
         VectorSorter    operator=(const VectorSorter &rhs);
         ~VectorSorter();
 
-        virtual void    Sort();
-        void    MergeSort();
-        void    InsertionSort(std::vector<int>::iterator start, int length);
-
+        virtual void    MergeInsertionSort();
+        void		    InsertionSort(std::vector<int>::iterator array, int len);
+        void		    MergeSort(std::vector<int>::iterator array, int len);
         virtual void    LogData() const;
 };
 

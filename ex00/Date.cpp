@@ -43,9 +43,25 @@ bool    Date::operator!=(const Date &rhs) const
 }
 
 
-bool    Data::IsValidData()
+bool    Date::IsValidData()
 {
+    if (year <= 0)
+        return (false);
+    if (month <= 0 || month > 12)
+        return (false);
+    if (day <= 0)
+        return (false);
 
+    int isLongMonth = !(month == 4 || month == 6 || month == 9 || month == 11);
+    if (month == 2)
+    {
+        int isLeapYear = (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0));
+        if (day > 28 + isLeapYear)
+            return (false);
+    }
+    else  if (day > 30 + isLongMonth)
+        return (false);
+    return (true);
 }
 
 Date::Date(const std::string &formattedText)
@@ -53,42 +69,19 @@ Date::Date(const std::string &formattedText)
     std::stringstream stream(formattedText);
     std::string segment;
     if (std::getline(stream, segment, '-'))
-    {
-        int _year;
-        std::istringstream(segment) >> _year;
-        if (_year > 0)
-            this->year = _year;
-        else
-            throw (BtcException("Bad Input" + formattedText));
-    }
-    else
-        throw (BtcException("Bad Input" + formattedText));
+        std::istringstream(segment) >> year;
 
     if (std::getline(stream, segment, '-'))
-    {
-        int _month;
-        std::istringstream(segment) >> _month;
-        if (_month > 0 && _month <= 12)
-            this->month = _month;
-        else
-            throw (BtcException("Bad Input" + formattedText));
-    }
-    else
-        throw (BtcException("Bad Input" + formattedText));
+        std::istringstream(segment) >> month;
 
     if (std::getline(stream, segment))
-    {
-        int _day;
-        
-        std::istringstream(segment) >> _day;
-        if (_day > 0  && day <= 31)
-            this->day = _day;
-    }
-    else
-        throw (BtcException("Bad Input" + formattedText));
+        std::istringstream(segment) >> day;
+
+    if (!IsValidData())
+        throw (BtcException("Bad Input " + formattedText));
 }
 
-void    Date::PrintDate()
+void    Date::PrintDate() const
 {
-    std::cout << "Year: " << year << ", Month: " << month << ", Day: " << day << std::endl; 
+    std::cout << year << "-" << month << "-" << day; 
 }

@@ -11,7 +11,7 @@ class ISorter
         
     public:
         ~ISorter();
-        virtual void    Sort() = 0;
+        virtual void    MergeInsertionSort() = 0;
         virtual void    LogData() const = 0;
 };
 

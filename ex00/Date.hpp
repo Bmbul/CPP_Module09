@@ -5,22 +5,27 @@
 #include <sstream>
 #include <string>
 
-struct  Date
+class  Date
 {
-    ~Date();
-    Date(const Date &src);
-    Date(const std::string &formattedText);
-    Date();
-    void    PrintDate();
+	public:
+		~Date();
+		Date(const Date &src);
+		Date(const std::string &formattedText);
+		Date();
 
-    short year;
-    short month;
-    short day;
-    Date    operator=(const Date &rhs);
-    bool    operator<(const Date &rhs) const;
-    bool    operator==(const Date &rhs) const;
-    bool    operator!=(const Date &rhs) const;
+		Date    operator=(const Date &rhs);
+		bool    operator<(const Date &rhs) const;
+		bool    operator==(const Date &rhs) const;
+		bool    operator!=(const Date &rhs) const;
 
+    	void    PrintDate() const;
+
+	private:
+		short year;
+		short month;
+		short day;
+        
+	    bool    IsValidData();
 };
 
 #endif // DATE_HPP
