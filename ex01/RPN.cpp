@@ -1,5 +1,5 @@
 #include "RPN.hpp"
-
+#include <limits>
 
 RPN::RPN() { }
 
@@ -25,7 +25,7 @@ inline bool    RPN::IsOperator(char ch) const
     return (ch == '+' || ch == '-' || ch == '*' || ch == '/');
 }
 
-int RPN::DoOperation(char operation, int firstNum, int secondNum) const
+double RPN::DoOperation(char operation, double firstNum, double secondNum) const
 {
     if (operation == '+')
         return (firstNum + secondNum);
@@ -33,26 +33,30 @@ int RPN::DoOperation(char operation, int firstNum, int secondNum) const
         return (firstNum - secondNum);
     if (operation == '*')
         return (firstNum * secondNum);
-    return (firstNum /secondNum);
+    if (secondNum == 0)
+    {
+        std::cout << "Division by 0" << std::endl;
+        throw std::exception();
+    }
+    return (firstNum / secondNum);
 }   
 
-int RPN::CalculateExpression() const
+double RPN::CalculateExpression() const
 {
-    std::stack<int> numbers;
-    std::string str;
-    std::stringstream ss(expression);
-    int result;
-    int firstNum;
-    int secondNum;
+    std::stack<double> numbers;
+    double result;
+    double firstNum;
+    double secondNum;
+    char ch;
 
-	while (std::getline(ss, str, ' '))
-	{
-        if (str.length() != 1)
-            throw std::exception();
-
-		if (isdigit(str[0]))
-            numbers.push(str[0] - '0');
-        else if (IsOperator(str[0]))
+    for(int i = 0; expression[i]; i++)
+    {
+        ch = expression[i];   
+        if (ch == ' ')
+            continue ;
+        if (isdigit(ch))
+            numbers.push(ch - '0');
+        else if (IsOperator(ch))
         {
             if (numbers.size() < 2)
                 throw std::exception();
@@ -60,15 +64,16 @@ int RPN::CalculateExpression() const
             numbers.pop();
             firstNum = numbers.top();
             numbers.pop();
-            result = DoOperation(str[0],firstNum, secondNum);
+            result = DoOperation(ch,firstNum, secondNum);
             numbers.push(result);
         }
         else throw std::exception();
-	}
-    return (numbers.top());
+    }
+    result = numbers.top();
+    return (result);
 }
 
-int  RPN::GetResult() const
+double  RPN::GetResult() const
 {
     return (result);
 }

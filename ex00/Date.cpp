@@ -43,6 +43,11 @@ bool    Date::operator!=(const Date &rhs) const
 }
 
 
+bool    Data::IsValidData()
+{
+
+}
+
 Date::Date(const std::string &formattedText)
 {
     std::stringstream stream(formattedText);

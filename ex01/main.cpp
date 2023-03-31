@@ -4,11 +4,10 @@
 
 void    ValidateInput(int argc, char **argv)
 {
-    std::string expresion(argv[1]);
     if (argc != 2)
         std::cout << "Wrong Number of arguments!" << std::endl
             << "Valid Usage: ./RPN <expression>" << std::endl;
-    else if (expresion.find_first_not_of("0123456789+-/* ") != std::string::npos)
+    else if (std::string(argv[1]).find_first_not_of("0123456789+-/* ") != std::string::npos)
         std::cout << "ERROR" << std::endl;
     else return ;
 

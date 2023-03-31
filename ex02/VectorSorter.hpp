@@ -3,6 +3,7 @@
 
 #include "ISorter.hpp"
 #include <vector>
+#include <iterator>
 
 class VectorSorter : public ISorter
 {
@@ -18,6 +19,9 @@ class VectorSorter : public ISorter
         ~VectorSorter();
 
         virtual void    Sort();
+        void    MergeSort();
+        void    InsertionSort(std::vector<int>::iterator start, int length);
+
         virtual void    LogData() const;
 };
 

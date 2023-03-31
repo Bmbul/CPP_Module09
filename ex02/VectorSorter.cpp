@@ -28,13 +28,21 @@ VectorSorter    VectorSorter::operator=(const VectorSorter &rhs)
 }
 
 void    VectorSorter::Sort()
-
+{
     std::cout << "Before    ";
     LogData();
-    std::vector<int>::iterator it = vector.begin() + 2;
-    std::iter_swap(vector.begin(), it);
     std::cout << "After    ";
     LogData();
+}
+
+void    VectorSorter::MergeSort()
+{
+    
+}
+
+void    VectorSorter::InsertionSort(std::vector<int>::iterator start, int length)
+{
+
 }
 
 void    VectorSorter::LogData() const

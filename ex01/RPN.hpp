@@ -11,7 +11,7 @@ class RPN
         RPN();
 
         std::string     expression;
-        int result;
+        double result;
 
         inline bool     IsOperator(char ch) const;
 
@@ -22,9 +22,9 @@ class RPN
 
         RPN operator=(const RPN &rhs);
 
-        int GetResult() const;
-        int CalculateExpression() const;
-        int DoOperation(char operation, int firstNum, int secondNum) const;
+        double GetResult() const;
+        double CalculateExpression() const;
+        double DoOperation(char operation, double firstNum, double secondNum) const;
 };
 
 #endif // RPN_HPP
