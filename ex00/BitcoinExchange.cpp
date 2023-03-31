@@ -103,9 +103,7 @@ void    BitcoinExchange::AnalyseInputRaw(const std::string &line)
     if (date != closest->first)
     {
         if (closest == data.begin())
-        {
-            throw BtcException("Error: looking for a data that has been recorded earlier, than the first data we have.");
-        }
+            throw BtcException("Bad Input: Too old date specified.");
         --closest;
     }
     std::cout << dateString << " => " << val << " = "

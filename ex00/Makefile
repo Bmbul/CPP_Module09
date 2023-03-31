@@ -33,10 +33,4 @@ fclean: clean
 
 re: fclean all
 
-
-
-test:
-	@echo $(OBJS)
-	@echo $(PRE_HEADERS)
-
 .PHONY: all clean fclean re
