@@ -14,22 +14,22 @@ CC = c++
 
 RM = rm -rf
 
-all: objs $(NAME)
+all: $(OBJECTS_FOLDER) $(NAME)
 
 $(OBJECTS_FOLDER)%.o: %.cpp $(PRE_HEADERS)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $? -o $(NAME)
+	$(CC) $(CFLAGS) $? -o $(NAME)
 
-objs:
-	@(mkdir -p objects)
+$(OBJECTS_FOLDER): 
+	mkdir -p $(OBJECTS_FOLDER)
 
 clean:
-	@$(RM) $(OBJECTS_FOLDER)
+	$(RM) $(OBJECTS_FOLDER)
 
 fclean: clean
-	@$(RM) $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 

@@ -1,6 +1,7 @@
 #include "RPN.hpp"
 #include <iostream>
 #include <stdlib.h>
+#include "RPNException.hpp"
 
 void    ValidateInput(int argc, char **argv)
 {
@@ -22,8 +23,8 @@ int main(int argc, char **argv)
         RPN rpn(argv[1]);
         std::cout << rpn.GetResult() << std::endl;
     }
-    catch(...)
+    catch(RPNException &e)
     {
-        std::cout << "ERROR" << std::endl;
+        std::cout << "ERROR: " << e.what() << std::endl;
     }
 }

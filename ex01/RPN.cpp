@@ -1,5 +1,6 @@
 #include "RPN.hpp"
 #include <limits>
+#include "RPNException.hpp"
 
 RPN::RPN() { }
 
@@ -33,11 +34,9 @@ double RPN::DoOperation(char operation, double firstNum, double secondNum) const
         return (firstNum - secondNum);
     if (operation == '*')
         return (firstNum * secondNum);
+        
     if (secondNum == 0)
-    {
-        std::cout << "Division by 0" << std::endl;
-        throw std::exception();
-    }
+        throw RPNException("Division by 0.");
     return (firstNum / secondNum);
 }   
 
@@ -59,7 +58,7 @@ double RPN::CalculateExpression() const
         else if (IsOperator(ch))
         {
             if (numbers.size() < 2)
-                throw std::exception();
+                throw RPNException("Not enough numbers in stack to complete the operation.");
             secondNum = numbers.top();
             numbers.pop();
             firstNum = numbers.top();
@@ -67,8 +66,14 @@ double RPN::CalculateExpression() const
             result = DoOperation(ch,firstNum, secondNum);
             numbers.push(result);
         }
-        else throw std::exception();
+        else throw RPNException("Unknown character.");
     }
+    
+    if (numbers.empty())
+        throw RPNException("There is no number in stack.");
+    else if (numbers.size() > 1)
+        throw RPNException("More than one number in the stack.\
+            \nNot sure which one to return.");
     result = numbers.top();
     return (result);
 }
