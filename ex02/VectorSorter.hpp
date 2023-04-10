@@ -9,6 +9,11 @@ class VectorSorter : public ISorter
 {
     private:
         std::vector<int> vector;
+        int baseCaseAmount;
+
+        void    InsertionSort(std::vector<int>::iterator array, int len);
+        void    MergeSort(std::vector<int>::iterator array, int len);
+        void    Merge(std::vector<int>::iterator array, int len);
 
     public:
         VectorSorter();
@@ -19,8 +24,6 @@ class VectorSorter : public ISorter
         ~VectorSorter();
 
         virtual void    MergeInsertionSort();
-        void		    InsertionSort(std::vector<int>::iterator array, int len);
-        void		    MergeSort(std::vector<int>::iterator array, int len);
         virtual void    LogData() const;
 };
 

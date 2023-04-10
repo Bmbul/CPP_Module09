@@ -5,9 +5,10 @@
 
 VectorSorter::~VectorSorter() { }
 
-VectorSorter::VectorSorter() { }
+VectorSorter::VectorSorter() : baseCaseAmount(0){ }
 
-VectorSorter::VectorSorter(const VectorSorter &src) : vector(src.vector) { }
+VectorSorter::VectorSorter(const VectorSorter &src)
+    : vector(src.vector), baseCaseAmount(src.baseCaseAmount){ }
 
 VectorSorter::VectorSorter(int argc, char **argv)
 {
@@ -16,6 +17,7 @@ VectorSorter::VectorSorter(int argc, char **argv)
         int number = std::atoi(argv[i]);
         vector.push_back(number);
     }
+    baseCaseAmount = std::max(16, (int)(vector.size() * 0.005));
 }
     
 VectorSorter    VectorSorter::operator=(const VectorSorter &rhs)
@@ -43,13 +45,7 @@ void    VectorSorter::MergeInsertionSort()
     std::cout << "After    ";
     LogData();
 	double duration = double(end - start) / double(CLOCKS_PER_SEC) * 1000000;
-	// for(std::vector<int>::iterator iter = vector.begin(); iter != vector.end() - 1; ++iter)
-	// {
-	// 	if (iter[0] > iter[1])
-	// 	{
-	// 		std::cout << "\n\n\n\n VORI E" << std::endl;
-	// 	}
-	// }
+
 	std::cout << "\033[1;31mTime to process a range of " << vector.size()
 		<< " elements with std::vector: " << duration << std::setprecision(9) << " usec\033[0m" << std::endl;
 }
@@ -73,13 +69,51 @@ void	VectorSorter::InsertionSort(std::vector<int>::iterator array, int len)
 
 void	VectorSorter::MergeSort(std::vector<int>::iterator array, int len)
 {
-	if (len > 15)   
-	{
+
+	if (len < baseCaseAmount)   
+	    InsertionSort(array, len);
+    else
+    {
 		int firstLen = len/2 + (len % 2);
 		MergeSort(array, firstLen);
-		MergeSort(array + firstLen, len - firstLen);  
-	}
-	InsertionSort(array, len);
+		MergeSort(array + firstLen, len - firstLen);
+        Merge(array, len);
+    }
+}
+
+
+void	VectorSorter::Merge(std::vector<int>::iterator array, int len)
+{
+    int firstHalfLen = len/2 + (len % 2);
+    std::vector<int>::iterator  firstIter = array;
+    std::vector<int>::iterator  secondIter = array + firstHalfLen;
+
+    std::vector<int>::iterator  firstEnd = array + firstHalfLen;
+    std::vector<int>::iterator  secondEnd = array + len;
+
+    std::vector<int>    temp;
+    while (firstIter != firstEnd && secondIter != secondEnd)
+    {
+        if (*firstIter < *secondIter)
+        {
+            temp.push_back(*firstIter);
+            ++firstIter;
+        }
+        else{
+            temp.push_back(*secondIter);
+            ++secondIter;
+        }
+    }
+
+    for (;firstIter != firstEnd; ++firstIter)
+        temp.push_back(*firstIter);
+    for (;secondIter != secondEnd; ++secondIter)
+        temp.push_back(*secondIter);
+
+    for(int i = 0; i < len; i++)
+    {
+        array[i] = temp[i];
+    }
 }
 
 void    VectorSorter::LogData() const

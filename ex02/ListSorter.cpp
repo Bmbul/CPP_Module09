@@ -3,9 +3,10 @@
 
 ListSorter::~ListSorter() { }
 
-ListSorter::ListSorter() { }
+ListSorter::ListSorter() : baseCaseAmount(0) { }
 
-ListSorter::ListSorter(const ListSorter &src) : list(src.list) { }
+ListSorter::ListSorter(const ListSorter &src)
+    : list(src.list), baseCaseAmount(src.baseCaseAmount) { }
 
 ListSorter::ListSorter(int argc, char **argv)
 {
@@ -14,6 +15,7 @@ ListSorter::ListSorter(int argc, char **argv)
         int number = std::atoi(argv[i]);
         list.push_back(number);
     }
+    baseCaseAmount = std::max(16, (int)(list.size() * 0.005));
 }
 
 ListSorter    ListSorter::operator=(const ListSorter &rhs)
@@ -41,14 +43,7 @@ void    ListSorter::MergeInsertionSort()
     std::cout << "After    ";
     LogData();
 	double duration = double(end - start) / double(CLOCKS_PER_SEC) * 1000000;
-	// std::list<int>::iterator lastToCheck = GetPrev(list.end());
-	// for(std::list<int>::iterator iter = list.begin(); iter != lastToCheck; ++iter)
-	// {
-	// 	if (*iter > *GetNext(iter))
-	// 	{
-	// 		std::cout << "\n\n\n\n VORI E" << std::endl;
-	// 	}
-	// }
+
 	std::cout << "\033[1;31mTime to process a range of " << list.size()
 		<< " elements with std::vector : " << duration << std::setprecision(9) << " usec\033[0m" << std::endl;
 }
@@ -91,16 +86,58 @@ void	ListSorter::InsertionSort(std::list<int>::iterator array, int len)
 
 void	ListSorter::MergeSort(std::list<int>::iterator array, int len)
 {
-	if (len > 15)   
-	{
+	if (len < baseCaseAmount)   
+	    InsertionSort(array, len);
+    else
+    {
 		int firstLen = len/2 + (len % 2);
 		MergeSort(array, firstLen);
 		std::list<int>::iterator iter = array;
 		std::advance(iter, firstLen);
-		MergeSort(iter, len - firstLen);  
-	}
-	InsertionSort(array, len);
+		MergeSort(iter, len - firstLen);
+        Merge(array, len);
+    }
 }
+
+void	ListSorter::Merge(std::list<int>::iterator array, int len)
+{
+    int firstHalfLen = len/2 + (len % 2);
+    std::list<int>::iterator  firstIter = array;
+    std::list<int>::iterator  secondIter = array;
+    std::list<int>::iterator  firstEnd = array;
+    std::list<int>::iterator  secondEnd = array;
+
+    std::advance(secondIter, firstHalfLen);
+    std::advance(firstEnd, firstHalfLen);
+    std::advance(secondEnd, len);
+
+    std::list<int>    temp;
+    while (firstIter != firstEnd && secondIter != secondEnd)
+    {
+        if (*firstIter < *secondIter)
+        {
+            temp.push_back(*firstIter);
+            ++firstIter;
+        }
+        else{
+            temp.push_back(*secondIter);
+            ++secondIter;
+        }
+    }
+
+    for (;firstIter != firstEnd; ++firstIter)
+        temp.push_back(*firstIter);
+    for (;secondIter != secondEnd; ++secondIter)
+        temp.push_back(*secondIter);
+
+    std::list<int>::iterator it = temp.begin();
+    for(int i = 0; i < len; i++)
+    {
+        *array = *it;
+        ++array; ++it;
+    }
+}
+
 
 
 void    ListSorter::LogData() const

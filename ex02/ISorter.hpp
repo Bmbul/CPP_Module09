@@ -7,7 +7,7 @@
 class ISorter
 {
     protected:
-        ISorter(/* args */);
+        ISorter();
         
     public:
         ~ISorter();
